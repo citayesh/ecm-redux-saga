@@ -6,7 +6,7 @@ import "./Directory.style.scss"
 function Directory(){
 const [data,setData]=useState([])
 useEffect(()=>{
-    fetch('http://www.mocky.io/v2/5e8bb5532f00002b0088c4cb')
+    fetch('https://my-json-server.typicode.com/citayesh/menu/db')
     .then(response => {
         return(response.json());
       }).then((json) => setData(json.menu))
@@ -14,8 +14,8 @@ useEffect(()=>{
 },[])
 return(
 <div className="directory-menu">
-   { data.map(({title,imageUrl,id,size})=>
-    <MenuItem title={title} imageUrl={imageUrl} key={id} size={size}/>)
+   { data.map(({id,...otherSectionProps})=>
+    <MenuItem key={id} {...otherSectionProps}/>)
    }
 </div>
 

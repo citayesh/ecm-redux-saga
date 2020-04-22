@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import "./Signin.style.scss"
 import FormInput from '../form-input/FormInput.component';
 import CustomButton from '../custom-button/CustomButton.component';
-import {signInWithGoogle} from '../firebase/Firebase.utils'
+import {signInWithGoogle, auth} from '../firebase/Firebase.utils'
 
 
 function Signin(){
@@ -11,10 +11,17 @@ function Signin(){
         const {name,value}=event.target;
         setState(prevState => ({ ...prevState, [name]: value }));
     }
-    function handleSubmit(event){
+    async function handleSubmit(event){
         event.preventDefault();
         const {email,password}=state;
-    }
+        try {
+            await auth.signInWithEmailAndPassword(email,password)
+            setState({ email: "", password: "" })
+            
+          } catch (error) {
+            console.error(error);
+          }
+        };
     return(
 <div className="sign-in">
     <h2>I allready have an account</h2>

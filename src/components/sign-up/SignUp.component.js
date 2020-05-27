@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 
 import CustomButton from '../custom-button/CustomButton.component';
 import FormInput from '../form-input/FormInput.component';
-import { auth, creatUserProfileDocument } from '../firebase/Firebase.utils';
+import { auth, createUserProfileDocument } from '../firebase/Firebase.utils';
 
 import './SignUp.style.scss';
 
@@ -27,7 +27,7 @@ const [state,setState]=useState({
         email,
         password
       );
-      await creatUserProfileDocument(user, { displayName });
+      await createUserProfileDocument(user, { displayName });
        setState({
             displayName: '',
             email: '',

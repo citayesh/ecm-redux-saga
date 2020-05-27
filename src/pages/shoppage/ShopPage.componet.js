@@ -1,22 +1,17 @@
-import React,{useState,useEffect} from "react";
+import React from "react";
 import "./ShopPage.style.scss"
-import PreviewCollectionComponent from "../../components/preview-collection/PreviewCollection.component";
+import CollectionsOverview from "../../components/collections-overview/CollectionsOverview.component";
+import { Route } from "react-router-dom";
+import CollectionPage from "../collection/Collection.component";
 
 
-function ShopPage(){
-const [collection,setCollection]=useState([])
-useEffect(()=>{
-    fetch('https://my-json-server.typicode.com/citayesh/product-api/db')
-    .then(response => {
-        return(response.json());
-      }).then((json) => setCollection(json.SHOP_DATA))
-       
-},[])
+function ShopPage({match}){
+
 return(
 <div className="shop-page">
-   { collection.map(({id,...otherCollectionProps})=>
-    <PreviewCollectionComponent key={id} {...otherCollectionProps}/>)
-   }
+    <Route exact path={`${match.path}`} component={CollectionsOverview}/>
+    <Route exact path={`${match.path}/:collectionId`} component={CollectionPage}/>
+
 </div>
 
 )

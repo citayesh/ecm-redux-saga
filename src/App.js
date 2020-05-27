@@ -1,37 +1,58 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {Switch, Route} from 'react-router-dom'
+import React, { useEffect, useCallback } from 'react';
+import {Switch, Route,Redirect} from 'react-router-dom'
 import './App.css';
 import HomePage from './pages/homepage/HomePage.component';
 import ShopPage from './pages/shoppage/ShopPage.componet';
 import Header from './components/header/Header.component';
 import SigninUp from './pages/sign-in-up-page/SigninUp.component';
-import {auth,creatUserProfileDocument} from './components/firebase/Firebase.utils';
+import {auth,createUserProfileDocument} from './components/firebase/Firebase.utils';
+import {useDispatch, useSelector } from 'react-redux';
+import { setCurrentUser } from './redux/user/user.action';
+import {selecetCurrentUser} from "./redux/user/user.selector"
+import CheckoutPage from './pages/checkout/CheckoutPage.component';
 
-function App() {
-  const [currentUser,setCurrentuser]=useState({id:"",data:[]});
-  useEffect(() => {
-    const subscribeFromAuth=auth.onAuthStateChanged(async userAuth =>{ 
-    if (userAuth){
-    const userRef= await creatUserProfileDocument(userAuth)
-    userRef.onSnapshot(snapShot=>setCurrentuser({id:snapShot.id,data:snapShot.data()}))
-    }else{
-      setCurrentuser(userAuth)
+
+function App (){
+  const dispatch=useDispatch();
+  const currentUser=useSelector(state =>selecetCurrentUser(state))
+  const unsubscribeFromAuth =useCallback(() =>
+    auth.onAuthStateChanged(async userAuth => {
+    dispatch(setCurrentUser(userAuth))
+    if (userAuth) {
+      const userRef = await createUserProfileDocument(userAuth);
+      userRef.onSnapshot(snapShot => {
+        dispatch(setCurrentUser({
+          id: snapShot.id,
+          ...snapShot.data()
+        })
+       ) })
     }
-  })
-     return () =>{subscribeFromAuth.abort();
-     };
-  },[]);
-  return (
-    <div>
-      <Header currentUser={currentUser}/>
-      <Switch>
-         <Route exact path="/" component={HomePage} />
-         <Route exact path="/shop" component={ShopPage} />
-         <Route exact path="/signin" component={SigninUp} />
-      </Switch>
+  }),[dispatch])
+useEffect(()=>{
+    unsubscribeFromAuth()
+    return()=>{unsubscribeFromAuth.abort()}
+  },[unsubscribeFromAuth])
+    return (
+      <div>
+        <Header />
+        <Switch>
+          <Route exact path='/' component={HomePage} />
+          <Route path='/shop' component={ShopPage} />
+          <Route exact path='/checkout' component={CheckoutPage} />
+          <Route
+            exact
+            path='/signin'
+            render={() =>
+                currentUser ? (
+                <Redirect to='/' />
+              ) : (
+                <SigninUp />
+              )
+            }
+          />
+        </Switch>
       </div>
-  );
-}
-
-
-export default App;
+    );
+  
+  }  
+  export default App;

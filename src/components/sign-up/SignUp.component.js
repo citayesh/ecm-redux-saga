@@ -4,7 +4,7 @@ import CustomButton from '../custom-button/CustomButton.component';
 import FormInput from '../form-input/FormInput.component';
 import { auth, createUserProfileDocument } from '../firebase/Firebase.utils';
 
-import './SignUp.style.scss';
+import {SignUpTitle,SignUpContainer} from './SignUp.style';
 
 function SignUp(){
 const [state,setState]=useState({
@@ -47,10 +47,10 @@ const [state,setState]=useState({
   };
     const { displayName, email, password, confirmPassword } =state;
     return (
-      <div className='sign-up'>
-        <h2 className='title'>I do not have a account</h2>
+      <SignUpContainer>
+        <SignUpTitle>I do not have a account</SignUpTitle>
         <span>Sign up with your email and password</span>
-        <form className='sign-up-form' onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <FormInput
             type='text'
             name='displayName'
@@ -85,7 +85,7 @@ const [state,setState]=useState({
           />
           <CustomButton type='submit'>SIGN UP</CustomButton>
         </form>
-      </div>
+      </SignUpContainer>
     );
   }
 

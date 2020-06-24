@@ -1,23 +1,23 @@
 import React,{useState,useEffect} from "react";
 import MenuItem from "../menu-item/MenuItem.component"
-import "./Directory.style.scss"
+import {DirectoryMenuContainer} from "./Directory.style"
+import axios from 'axios';
 
 
 function Directory(){
 const [data,setData]=useState([])
 useEffect(()=>{
-    fetch('https://my-json-server.typicode.com/citayesh/menu-api/db')
-    .then(response => {
-        return(response.json());
-      }).then((json) => setData(json.menu))
+  axios.get(`https://my-json-server.typicode.com/citayesh/menu-api/db`)
+    .then(res => {
+       setData(res.data.menu)})
        
 },[])
 return(
-<div className="directory-menu">
+<DirectoryMenuContainer>
    { data.map(({id,...otherDataProps})=>
     <MenuItem key={id} {...otherDataProps}/>)
    }
-</div>
+</DirectoryMenuContainer>
 
 )
 }

@@ -1,18 +1,22 @@
-import React from "react";
-import "./ShopPage.style.scss"
-import CollectionsOverview from "../../components/collections-overview/CollectionsOverview.component";
+import React ,{useEffect} from "react";
+import {ShopPageContainer} from "./ShopPage.style"
 import { Route } from "react-router-dom";
-import CollectionPage from "../collection/Collection.component";
-
+import CollectionsOverviewContainer from "../../components/collections-overview/CollectionsOverview.container";
+import  CollectionPageContainer from "../collection/Collection.container";
+import {fetchCollectionsStartAsync} from '../../redux/shop/shop.action';
+import { useDispatch } from "react-redux";
 
 function ShopPage({match}){
+const dispatch=useDispatch();
+useEffect(()=>{
+  dispatch(fetchCollectionsStartAsync())   
+ },[dispatch])
 
 return(
-<div className="shop-page">
-    <Route exact path={`${match.path}`} component={CollectionsOverview}/>
-    <Route exact path={`${match.path}/:collectionId`} component={CollectionPage}/>
-
-</div>
+<ShopPageContainer>
+    <Route exact path={`${match.path}`} component={CollectionsOverviewContainer}/>
+    <Route exact path={`${match.path}/:collectionId`} component={CollectionPageContainer}/>
+</ShopPageContainer>
 
 )
 }

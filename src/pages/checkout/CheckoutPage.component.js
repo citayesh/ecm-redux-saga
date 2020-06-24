@@ -2,36 +2,48 @@ import React from "react";
 import {selectCartItems,selectCartTotal} from "../../redux/cart/cart.selectors"
 import { useSelector } from "react-redux";
 import CheckoutItem from "../../components/checkout-item/CheckoutItem.component";
-
-import './CheckoutPage.style.scss';
+import StripeCheckoutButton from '../../components/stripeButton/stripeButton.component'
+import {
+  CheckoutPageContainer,
+  CheckoutHeaderContainer,
+  HeaderBlockContainer,
+  TotalContainer,
+  WarningContainer
+} from './CheckoutPage.style';
 
 const CheckoutPage =()=>{
     const total =useSelector(state =>selectCartTotal(state));
     const cartItems=useSelector(state=>selectCartItems(state))
     return(
-        <div className='checkout-page'>
-        <div className='checkout-header'>
-          <div className='header-block'>
+        <CheckoutPageContainer>
+        <CheckoutHeaderContainer>
+          <HeaderBlockContainer>
             <span>Product</span>
-          </div>
-          <div className='header-block'>
+          </HeaderBlockContainer>
+          <HeaderBlockContainer>
             <span>Description</span>
-          </div>
-          <div className='header-block'>
+          </HeaderBlockContainer>
+          <HeaderBlockContainer>
             <span>Quantity</span>
-          </div>
-          <div className='header-block'>
+          </HeaderBlockContainer>
+          <HeaderBlockContainer>
             <span>Price</span>
-          </div>
-          <div className='header-block'>
+          </HeaderBlockContainer>
+          <HeaderBlockContainer>
             <span>Remove</span>
-          </div>
-        </div>
+          </HeaderBlockContainer>
+        </CheckoutHeaderContainer>
         {cartItems.map(cartItem => (
           <CheckoutItem key={cartItem.id} item={cartItem} />
         ))}
-        <div className='total'>TOTAL: ${total}</div>
-      </div>
+        <TotalContainer>TOTAL: ${total}</TotalContainer>
+        <WarningContainer>
+      *Please use the following test credit card for payments*
+      <br />
+      4242 4242 4242 4242 - Exp: 01/20 - CVV: 123
+    </WarningContainer>
+    <StripeCheckoutButton price={total} />
+      </CheckoutPageContainer>
     );
     
 }

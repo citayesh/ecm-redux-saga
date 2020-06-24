@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./Signin.style.scss"
+import {SignInContainer,SignInTitle,ButtonsBarContainer} from "./Signin.style"
 import FormInput from '../form-input/FormInput.component';
 import CustomButton from '../custom-button/CustomButton.component';
 import {signInWithGoogle, auth} from '../firebase/Firebase.utils'
@@ -23,8 +23,8 @@ function Signin(){
           }
         };
     return(
-<div className="sign-in">
-    <h2>I allready have an account</h2>
+<SignInContainer>
+    <SignInTitle>I allready have an account</SignInTitle>
     <span>Sign in with your email and password</span>
     <form onSubmit={handleSubmit}>
     <FormInput 
@@ -41,12 +41,12 @@ function Signin(){
     lable="Password"
     handleChange={handleChange} 
     required />
-    <div className="buttons">
+    <ButtonsBarContainer>
     <CustomButton type="submit">SIGN IN</CustomButton>
-    <CustomButton onClick={signInWithGoogle} isGoogleSignin>SIGN IN WITH GOOGLE</CustomButton>
-    </div>
+    <CustomButton onClick={signInWithGoogle} isGoogleSignIn>SIGN IN WITH GOOGLE</CustomButton>
+    </ButtonsBarContainer>
     </form>
-</div>
+</SignInContainer>
 )
 }
 

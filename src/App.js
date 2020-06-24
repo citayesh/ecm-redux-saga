@@ -15,23 +15,23 @@ import CheckoutPage from './pages/checkout/CheckoutPage.component';
 function App (){
   const dispatch=useDispatch();
   const currentUser=useSelector(state =>selecetCurrentUser(state))
-  const unsubscribeFromAuth =useCallback(() =>
-    auth.onAuthStateChanged(async userAuth => {
-    dispatch(setCurrentUser(userAuth))
-    if (userAuth) {
-      const userRef = await createUserProfileDocument(userAuth);
-      userRef.onSnapshot(snapShot => {
-        dispatch(setCurrentUser({
-          id: snapShot.id,
-          ...snapShot.data()
-        })
-       ) })
-    }
-  }),[dispatch])
+
 useEffect(()=>{
-    unsubscribeFromAuth()
-    return()=>{unsubscribeFromAuth.abort()}
-  },[unsubscribeFromAuth])
+  const unsubscribeFromAuth =
+  auth.onAuthStateChanged(async userAuth => {
+  dispatch(setCurrentUser(userAuth))
+  if (userAuth) {
+    const userRef = await createUserProfileDocument(userAuth);
+    userRef.onSnapshot(snapShot => {
+      dispatch(setCurrentUser({
+        id: snapShot.id,
+        ...snapShot.data()
+      })
+     ) })
+    }
+})
+   return ()=>{unsubscribeFromAuth()}
+  },[dispatch])
     return (
       <div>
         <Header />

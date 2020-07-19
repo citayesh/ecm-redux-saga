@@ -21,7 +21,6 @@ export const fetchCollectionsStartAsync = () => {
       axios.get(`https://my-json-server.typicode.com/citayesh/product-api/SHOP_DATA`)
     .then(res => {
      const collectionsMap=res.data;
-     console.log(collectionsMap)
      dispatch(fetchCollectionsSuccess(collectionsMap));
       })
       .catch(error => dispatch(fetchCollectionsFailure(error.message)));

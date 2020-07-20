@@ -24,10 +24,5 @@
 <li><a href="https://www.npmjs.com/package/react-router">React-Router</a></li>
 <li><a href="https://www.npmjs.com/package/styled-components">styled-components</a></li>
 </ul>
-<h1>License</h1>
- <Br/>
- This project is licensed under the MIT License - see the LICENSE.md file for details.
-
-
 
 </article>
